@@ -10,6 +10,79 @@
     />
     <link rel="shortcut icon" type="image/png" href="./img/heart.svg" />
     <link rel="stylesheet" href="style/style.css" />
+    <style>
+.floating-heart {
+  position: fixed;
+  bottom: -10px;
+  font-size: 20px;
+  animation: floatUp 6s linear infinite;
+  z-index: 0;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-110vh); opacity: 0; }
+}
+
+.proposal-section {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #ff4e8a, #ff99cc);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.proposal-section h1 {
+  font-size: 24px;
+  color: white;
+  margin-bottom: 30px;
+}
+
+.proposal-section button {
+  padding: 12px 25px;
+  font-size: 18px;
+  margin: 15px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+#yesBtn {
+  background: white;
+  color: #ff2e75;
+  font-weight: bold;
+}
+
+#noBtn {
+  background: black;
+  color: white;
+  position: absolute;
+}
+
+#loveMessage {
+  display: none;
+  font-size: 26px;
+  font-weight: bold;
+  color: white;
+}
+
+.graffiti {
+  position: fixed;
+  font-size: 24px;
+  animation: pop 0.8s infinite alternate;
+}
+
+@keyframes pop {
+  from { transform: scale(1); }
+  to { transform: scale(1.3); }
+}
+</style>
+    
   </head>
 
   <body>
@@ -129,9 +202,73 @@
         <p class="last-smile">:)</p>
       </div>
     </div>
+    <div class="proposal-section" id="proposalSection">
+  <h1>💖 TIKKII, WILL YOU BE MY VALENTINE? 💖</h1> 
+  <button id="yesBtn">YES 😍</button>
+  <button id="noBtn">NO 😜</button>
+
+  <div id="loveMessage">
+    💕 I KNEW YOU LOVE ME 💕 <br><br>
+    <img src="https://media.giphy.com/media/26xBukhbEwP6ZJ1UQ/giphy.gif" width="200">
+  </div>
+</div>
+
   </body>
 
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
   <script type="text/babel" src="script/main.js"></script>
+  <script>
+
+/* Show proposal after animation (15 sec delay) */
+setTimeout(() => {
+  document.getElementById("proposalSection").style.display = "flex";
+}, 15000);
+
+/* Floating Hearts */
+function createFloatingHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("floating-heart");
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (15 + Math.random() * 20) + "px";
+  heart.style.animationDuration = (4 + Math.random() * 3) + "s";
+  document.body.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 6000);
+}
+setInterval(createFloatingHeart, 300);
+
+/* Move NO Button */
+const noBtn = document.getElementById("noBtn");
+
+function moveNoButton() {
+  const x = Math.random() * (window.innerWidth - 100);
+  const y = Math.random() * (window.innerHeight - 50);
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+noBtn.addEventListener("mouseover", moveNoButton);
+noBtn.addEventListener("touchstart", moveNoButton);
+
+/* YES Click */
+document.getElementById("yesBtn").addEventListener("click", function() {
+  document.querySelector("#proposalSection h1").style.display = "none";
+  document.getElementById("yesBtn").style.display = "none";
+  document.getElementById("noBtn").style.display = "none";
+  document.getElementById("loveMessage").style.display = "block";
+
+  for (let i = 0; i < 30; i++) {
+    const graffiti = document.createElement("div");
+    graffiti.classList.add("graffiti");
+    graffiti.innerHTML = "💘 LOVE 💘";
+    graffiti.style.left = Math.random() * 100 + "vw";
+    graffiti.style.top = Math.random() * 100 + "vh";
+    document.body.appendChild(graffiti);
+  }
+});
+</script>    
 </html>
